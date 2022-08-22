@@ -1,4 +1,6 @@
 ﻿using System;
+using Ex03.GarageLogic.Enums;
+using Ex03.GarageLogic.Exceptions;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,16 +8,24 @@ using System.Threading.Tasks;
 
 namespace Ex03.GarageLogic
 {
-    public class FuelBasedVehicle : Vehicle
+    internal class FuelBasedVehicle : Vehicle
     {
         private readonly eFuelType m_FuelType;
         private float m_CurrentFuelAmount;
         private readonly float m_MaxFuelAmount;
 
-        public FuelBasedVehicle(VehicleOwner i_VehicleOwner, string i_VehicleModel, string i_LicenseNumber, Wheel[] i_Wheels,
+        public FuelBasedVehicle(string i_OwnerName, string i_OwnerPhoneNumber, string i_VehicleModel, string i_LicenseNumber,
+                                int i_NumberOfWheelsToCreate, string i_WheelModel, float i_CurrentTireAirPressure, 
+                                float i_MaxTireAirPressureSetByManufacturer,
                                 eFuelType i_FuelType, float i_CurrentFuelAmount, float i_MaxFuelAmount) : 
-                                base(i_VehicleOwner, i_VehicleModel, i_LicenseNumber, i_CurrentFuelAmount / i_MaxFuelAmount, i_Wheels)
+                                base(i_OwnerName, i_OwnerPhoneNumber, i_VehicleModel, i_LicenseNumber, 
+                                     i_CurrentFuelAmount / i_MaxFuelAmount, i_NumberOfWheelsToCreate, i_WheelModel,
+                                     i_CurrentTireAirPressure,  i_MaxTireAirPressureSetByManufacturer)
         {
+            if (i_CurrentFuelAmount > i_MaxFuelAmount)
+            {
+                throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_FUEL_MESSAGE);
+            }
             this.m_FuelType = i_FuelType;
             this.m_CurrentFuelAmount = i_CurrentFuelAmount;
             this.m_MaxFuelAmount = i_MaxFuelAmount;
@@ -59,12 +69,12 @@ namespace Ex03.GarageLogic
                 }
                 else
                 {
-                    // TODO: throw exception.
+                    throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_FUEL_MESSAGE);
                 }
             }
             else
             {
-                // TODO: throw exception of wrong fuel type.
+                throw new WrongFuelTypeException();
             }
         }
     }

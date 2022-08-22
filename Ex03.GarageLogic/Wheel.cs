@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
@@ -14,6 +11,10 @@ namespace Ex03.GarageLogic
 
         public Wheel(string i_WheelModel, float i_CurrentTireAirPressure, float i_MaxTireAirPressureSetByManufacturer)
         {
+            if (i_CurrentTireAirPressure > i_MaxTireAirPressureSetByManufacturer)
+            {
+                throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_AIR_MESSAGE);
+            }
             this.m_WheelModel = i_WheelModel;
             this.m_CurrentTireAirPressure = i_CurrentTireAirPressure;
             this.m_MaxTireAirPressureSetByManufacturer = i_MaxTireAirPressureSetByManufacturer;
@@ -49,14 +50,11 @@ namespace Ex03.GarageLogic
 
         public void InflateTire(float i_AirAmountToInflate)
         {
-            if (m_CurrentTireAirPressure + i_AirAmountToInflate <= m_MaxTireAirPressureSetByManufacturer)
+            if (m_CurrentTireAirPressure + i_AirAmountToInflate > m_MaxTireAirPressureSetByManufacturer)
             {
-                m_CurrentTireAirPressure += i_AirAmountToInflate;
+                throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_AIR_MESSAGE);
             }
-            else
-            {
-                // TODO: throw exception.
-            }
+            m_CurrentTireAirPressure += i_AirAmountToInflate;
         }
     }
 }

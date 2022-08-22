@@ -39,10 +39,20 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="eFuelType.cs" />
+    <Compile Include="Car.cs" />
+    <Compile Include="Enums\eCarColor.cs" />
+    <Compile Include="Enums\eFuelType.cs" />
     <Compile Include="ElectricVehicle.cs" />
-    <Compile Include="eVehicleConditionInTheGarage.cs" />
+    <Compile Include="Enums\eMotorcycleLicenseType.cs" />
+    <Compile Include="Enums\eNumberOfCarDoors.cs" />
+    <Compile Include="Enums\eVehicleConditionInTheGarage.cs" />
+    <Compile Include="Exceptions\ElementAmountExceedingLimitsException.cs" />
+    <Compile Include="Exceptions\WrongFuelTypeException.cs" />
     <Compile Include="FuelBasedVehicle.cs" />
+    <Compile Include="Garage.cs" />
+    <Compile Include="Interfaces\IVehicle.cs" />
+    <Compile Include="Motorcycle.cs" />
+    <Compile Include="Truck.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="VehicleOwner.cs" />
     <Compile Include="Wheel.cs" />
