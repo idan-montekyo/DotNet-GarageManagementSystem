@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ex03.GarageLogic.Enums
+﻿namespace Ex03.GarageLogic.Enums
 {
     public enum eNumberOfCarDoors
     {
-        Two,
-        Three,
-        Four,
-        Five
+        Two = 1,
+        Three = 2,
+        Four = 3,
+        Five = 4
     }
 }

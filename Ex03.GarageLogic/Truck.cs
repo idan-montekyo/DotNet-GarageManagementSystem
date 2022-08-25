@@ -4,11 +4,12 @@ using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
-    public class Truck : IVehicle
+    public class Truck : IConcreteVehicle
     {
         private FuelBasedVehicle m_FuelBasedVehicle;
         private bool m_HasFreezer;
         private float m_MaxCargoWeight;
+        private static readonly byte sr_NumberOfWheels = 16;
 
         public Truck(string i_OwnerName, string i_OwnerPhoneNumber, string i_VehicleModel, string i_LicenseNumber,
                      string i_WheelModel, float i_CurrentTireAirPressure, float i_MaxTireAirPressureSetByManufacturer,
@@ -17,46 +18,40 @@ namespace Ex03.GarageLogic
         {
             if (i_CurrentFuelAmount > i_MaxFuelAmount)
             {
-                throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_FUEL_MESSAGE);
+                throw new ValueOutOfRangeException(ValueOutOfRangeException.sr_FUEL_MESSAGE_TAG);
             }
-            int numberOfWheelsToCreate = 16;
+
             this.m_FuelBasedVehicle = new FuelBasedVehicle(i_OwnerName, i_OwnerPhoneNumber, i_VehicleModel, i_LicenseNumber,
-                                                           numberOfWheelsToCreate, i_WheelModel, i_CurrentTireAirPressure,
+                                                           sr_NumberOfWheels, i_WheelModel, i_CurrentTireAirPressure,
                                                            i_MaxTireAirPressureSetByManufacturer,
                                                            i_FuelType, i_CurrentFuelAmount, i_MaxFuelAmount);
             this.m_HasFreezer = i_HasFreezer;
             this.m_MaxCargoWeight = i_MaxCargoWeight;
         }
 
-        public bool HasFreezer
+        Vehicle IConcreteVehicle.VehicleInfo
         {
             get
             {
-                return this.m_HasFreezer;
+                return this.m_FuelBasedVehicle;
             }
         }
 
-        public float MaxCargoWeight
+        string IConcreteVehicle.GetFullInformation()
         {
-            get
-            {
-                return this.m_MaxCargoWeight;
-            }
+            string information = string.Format("Vehicle's type: {1}{0}" +
+                                               "{2}{0}" +
+                                               "Can the vehicle transport refrigirerated contents?: {3}{0}" +
+                                               "Vehicle's maximum cargo weight: {4}{0}",
+                                               Environment.NewLine, this.GetType().Name, m_FuelBasedVehicle.ToString(),
+                                               m_HasFreezer ? "Yes" : "No", m_MaxCargoWeight);
+
+            return information;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i_AmountToCharge">Amount of energy to fill.</param>
-        /// <returns>True if secceeded to fill the energy source. Otherwise false.</returns>
-        /// <exception cref="ElementAmountExceedingLimitsException" cref="WrongFuelTypeException"></exception>
-        public bool TryFillEnergySource(float i_AmountToCharge)
+        public override int GetHashCode()
         {
-            bool isSucceeded = false;
-            this.m_FuelBasedVehicle.FillGas(i_AmountToCharge, m_FuelBasedVehicle.FuelType);
-            isSucceeded = true;
-
-            return isSucceeded;
+            return this.m_FuelBasedVehicle.LicenseNumber.GetHashCode();
         }
     }
 }

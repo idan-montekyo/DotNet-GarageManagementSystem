@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Ex03.GarageLogic.Enums
+﻿namespace Ex03.GarageLogic.Enums
 {
     public enum eCarColor
     {
-        Gray,
-        White,
-        Black,
-        Blue
+        Gray = 1,
+        White = 2,
+        Black = 3,
+        Blue = 4
     }
 }

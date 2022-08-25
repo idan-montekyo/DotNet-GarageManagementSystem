@@ -1,30 +1,29 @@
-﻿using System;
-using Ex03.GarageLogic.Exceptions;
+﻿using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
     public class Wheel
     {
-        private readonly string m_WheelModel;
+        private readonly string r_WheelModel;
         private float m_CurrentTireAirPressure;
-        private readonly float m_MaxTireAirPressureSetByManufacturer;
+        private readonly float r_MaxTireAirPressureSetByManufacturer;
 
         public Wheel(string i_WheelModel, float i_CurrentTireAirPressure, float i_MaxTireAirPressureSetByManufacturer)
         {
             if (i_CurrentTireAirPressure > i_MaxTireAirPressureSetByManufacturer)
             {
-                throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_AIR_MESSAGE);
+                throw new ValueOutOfRangeException(ValueOutOfRangeException.sr_AIR_MESSAGE_TAG);
             }
-            this.m_WheelModel = i_WheelModel;
+            this.r_WheelModel = i_WheelModel;
             this.m_CurrentTireAirPressure = i_CurrentTireAirPressure;
-            this.m_MaxTireAirPressureSetByManufacturer = i_MaxTireAirPressureSetByManufacturer;
+            this.r_MaxTireAirPressureSetByManufacturer = i_MaxTireAirPressureSetByManufacturer;
         }
 
         public string WheelModel
         {
             get
             {
-                return this.m_WheelModel;
+                return this.r_WheelModel;
             }
         }
 
@@ -34,25 +33,21 @@ namespace Ex03.GarageLogic
             {
                 return this.m_CurrentTireAirPressure;
             }
-            set
-            {
-                this.m_CurrentTireAirPressure = value;
-            }
         }
 
         public float MaxTireAirPressureSetByManufacturer
         {
             get
             {
-                return this.m_MaxTireAirPressureSetByManufacturer;
+                return this.r_MaxTireAirPressureSetByManufacturer;
             }
         }
 
         public void InflateTire(float i_AirAmountToInflate)
         {
-            if (m_CurrentTireAirPressure + i_AirAmountToInflate > m_MaxTireAirPressureSetByManufacturer)
+            if (m_CurrentTireAirPressure + i_AirAmountToInflate > r_MaxTireAirPressureSetByManufacturer)
             {
-                throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_AIR_MESSAGE);
+                throw new ValueOutOfRangeException(ValueOutOfRangeException.sr_AIR_MESSAGE_TAG);
             }
             m_CurrentTireAirPressure += i_AirAmountToInflate;
         }

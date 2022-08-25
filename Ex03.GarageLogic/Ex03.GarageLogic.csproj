@@ -40,22 +40,27 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Car.cs" />
+    <Compile Include="ConcreteVehicleBuilder.cs" />
     <Compile Include="Enums\eCarColor.cs" />
     <Compile Include="Enums\eFuelType.cs" />
     <Compile Include="ElectricVehicle.cs" />
     <Compile Include="Enums\eMotorcycleLicenseType.cs" />
     <Compile Include="Enums\eNumberOfCarDoors.cs" />
     <Compile Include="Enums\eVehicleConditionInTheGarage.cs" />
-    <Compile Include="Exceptions\ElementAmountExceedingLimitsException.cs" />
-    <Compile Include="Exceptions\WrongFuelTypeException.cs" />
+    <Compile Include="Enums\eVehicleType.cs" />
+    <Compile Include="Exceptions\ValueOutOfRangeException.cs" />
+    <Compile Include="Exceptions\VehicleNotFoundException.cs" />
     <Compile Include="FuelBasedVehicle.cs" />
     <Compile Include="Garage.cs" />
-    <Compile Include="Interfaces\IVehicle.cs" />
+    <Compile Include="Interfaces\IConcreteVehicle.cs" />
     <Compile Include="Motorcycle.cs" />
     <Compile Include="Truck.cs" />
     <Compile Include="Vehicle.cs" />
     <Compile Include="VehicleOwner.cs" />
     <Compile Include="Wheel.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

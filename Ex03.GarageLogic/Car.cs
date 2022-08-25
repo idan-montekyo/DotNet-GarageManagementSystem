@@ -5,28 +5,29 @@ using Ex03.GarageLogic.Exceptions;
 
 namespace Ex03.GarageLogic
 {
-    public class Car : IVehicle
+    public class Car : IConcreteVehicle
     {
         private Vehicle m_Vehicle;
-        private readonly eCarColor m_Color;
-        private readonly eNumberOfCarDoors m_NumberOfDoors;
+        private readonly eCarColor r_Color;
+        private readonly eNumberOfCarDoors r_NumberOfDoors;
+        private static readonly byte sr_NumberOfWheels = 4;
 
         public Car(string i_OwnerName, string i_OwnerPhoneNumber, string i_VehicleModel, string i_LicenseNumber,
-                   string i_WheelModel, float i_CurrentTireAirPressure,float i_MaxTireAirPressureSetByManufacturer,
+                   string i_WheelModel, float i_CurrentTireAirPressure, float i_MaxTireAirPressureSetByManufacturer,
                    eFuelType i_FuelType, float i_CurrentFuelAmount, float i_MaxFuelAmount,
                    eCarColor i_CarColor, eNumberOfCarDoors i_NumberOfDoors)
         {
             if (i_CurrentFuelAmount > i_MaxFuelAmount)
             {
-                throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_FUEL_MESSAGE);
+                throw new ValueOutOfRangeException(ValueOutOfRangeException.sr_FUEL_MESSAGE_TAG);
             }
-            int numberOfWheelsToCreate = 4;
+
             this.m_Vehicle = new FuelBasedVehicle(i_OwnerName, i_OwnerPhoneNumber, i_VehicleModel, i_LicenseNumber,
-                                                  numberOfWheelsToCreate, i_WheelModel, i_CurrentTireAirPressure,
+                                                  sr_NumberOfWheels, i_WheelModel, i_CurrentTireAirPressure,
                                                   i_MaxTireAirPressureSetByManufacturer,
                                                   i_FuelType, i_CurrentFuelAmount, i_MaxFuelAmount);
-            this.m_Color = i_CarColor;
-            this.m_NumberOfDoors = i_NumberOfDoors;
+            this.r_Color = i_CarColor;
+            this.r_NumberOfDoors = i_NumberOfDoors;
         }
 
         public Car(string i_OwnerName, string i_OwnerPhoneNumber, string i_VehicleModel, string i_LicenseNumber,
@@ -36,54 +37,40 @@ namespace Ex03.GarageLogic
         {
             if (i_BatteryTimeLeft > i_MaxBatteryLifeTime)
             {
-                throw new ElementAmountExceedingLimitsException(ElementAmountExceedingLimitsException.sr_FUEL_MESSAGE);
+                throw new ValueOutOfRangeException(ValueOutOfRangeException.sr_FUEL_MESSAGE_TAG);
             }
-            int numberOfWheelsToCreate = 4;
+
             this.m_Vehicle = new ElectricVehicle(i_OwnerName, i_OwnerPhoneNumber, i_VehicleModel, i_LicenseNumber,
-                                                 numberOfWheelsToCreate, i_WheelModel, i_CurrentTireAirPressure,
+                                                 sr_NumberOfWheels, i_WheelModel, i_CurrentTireAirPressure,
                                                  i_MaxTireAirPressureSetByManufacturer,
                                                  i_BatteryTimeLeft, i_MaxBatteryLifeTime);
-            this.m_Color = i_CarColor;
-            this.m_NumberOfDoors = i_NumberOfDoors;
+            this.r_Color = i_CarColor;
+            this.r_NumberOfDoors = i_NumberOfDoors;
         }
 
-        public eCarColor Color
+        Vehicle IConcreteVehicle.VehicleInfo
         {
             get
             {
-                return this.m_Color;
+                return this.m_Vehicle;
             }
         }
 
-        public eNumberOfCarDoors NumberOfDoors
+        string IConcreteVehicle.GetFullInformation()
         {
-            get
-            {
-                return this.m_NumberOfDoors;
-            }
+            string information = string.Format("Vehicle's type: {1}{0}" +
+                                               "{2}{0}" +
+                                               "Vehicle's color: {3}{0}" +
+                                               "Vehicle's number of doors: {4}{0}",
+                                               Environment.NewLine, this.GetType().Name, m_Vehicle.ToString(), r_Color.ToString(),
+                                               r_NumberOfDoors.ToString());
+            
+            return information;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="i_AmountToCharge">Amount of energy to fill.</param>
-        /// <returns>True if secceeded to fill the energy source. Otherwise false.</returns>
-        /// <exception cref="ElementAmountExceedingLimitsException" cref="WrongFuelTypeException"></exception>
-        public bool TryFillEnergySource(float i_AmountToCharge)
+        public override int GetHashCode()
         {
-            bool isSucceeded = false;
-            if (this.m_Vehicle is ElectricVehicle)
-            {
-                ((ElectricVehicle)this.m_Vehicle).ChargeBattery(i_AmountToCharge);
-            }
-            else if (this.m_Vehicle is FuelBasedVehicle)
-            {
-                FuelBasedVehicle thisVehicle = this.m_Vehicle as FuelBasedVehicle;
-                thisVehicle.FillGas(i_AmountToCharge, thisVehicle.FuelType);
-            }
-            isSucceeded = true;
-
-            return isSucceeded;
+            return this.m_Vehicle.LicenseNumber.GetHashCode();
         }
     }
 }
